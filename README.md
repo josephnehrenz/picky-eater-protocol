@@ -21,6 +21,7 @@ The system uses three specialized AI agents in a sequential workflow:
 - Enforces strict "Family Blacklist" rules
 - Performs zero-shot classification: `APPROVED` or `REJECTED`
 - Blacklist includes texture restrictions (mushy/slimy foods) and ingredient bans (onions, peppers, mushrooms)
+- Crucially, provides the minimal context signal (e.g., 'Onions') necessary for recovery.
 
 ### **Analyst Agent (Logistics Manager)**
 - Calculates preparation time and generates shopping lists
@@ -33,13 +34,13 @@ The system uses three specialized AI agents in a sequential workflow:
 - **Framework**: Google ADK (Agent Development Kit)
 - **LLM**: Gemini 2.5 Flash Lite
 - **Workflow**: Sequential agent execution with automated recovery loops
-- **Error Handling**: Self-correcting system with constraint-based retry logic
+- **Error Handling**: The system utilizes Context Engineering within its self-correcting retry loop to guarantee constraint compliance and efficiency.
 
 ### Core Features
 - **Recipe Generation**: Creates complete meal proposals based on ingredient requests
 - **Sensory Filtering**: Enforces texture and ingredient blacklists
 - **Logistics Planning**: Calculates prep time and generates shopping lists
-- **Failure Recovery**: Automatically finds alternative recipes when initial proposals are rejected
+- **Context Engineering**: Transforms the Censor's rejection signal into a highly constrained prompt for the Chef Agent's retry, ensuring an immediate, compliant alternative
 - **Custom Tools**: Python-based logistics calculator with simulated API integrations
 
 ## System Workflow
@@ -56,7 +57,7 @@ The system uses three specialized AI agents in a sequential workflow:
 1. **User Request:** "Beef chili with onions"
 2. **Chef Agent:** Generates chili recipe with onions
 3. **Censor Agent:** Detects banned ingredient → REJECTED: Onions
-4. **Recovery Loop:** Automatically requests onion-free alternative
+4. **Recovery Loop (Context Engineering):** The orchestrator captures the signal ('Onions') and uses it to generate a highly constrained prompt for the Chef Agent.
 5. **Analyst Agent:** Processes approved alternative recipe
 
 ## Project Structure
